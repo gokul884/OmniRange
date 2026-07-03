@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://gokulkrisnan-digital.web.app/sitemap.txt
+Sitemap: https://digicares.vercel.app/sitemap.txt

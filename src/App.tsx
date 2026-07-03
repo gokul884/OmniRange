@@ -112,7 +112,7 @@ export default function App() {
         : `${readingArticle.category}, ${readingArticle.title}, SEO, GEO, Web Development, DigiCare`;
       const postAuthor = readingArticle.author;
       const postImage = readingArticle.image;
-      const postUrl = `https://gokulkrisnan-digital.web.app/blog/${readingArticle.id}`;
+      const postUrl = `https://digicares.vercel.app/blog/${readingArticle.id}`;
 
       document.title = postTitle;
       updateOrCreateMeta('description', postDesc);
@@ -137,7 +137,7 @@ export default function App() {
       const blogsTitle = "Growth & Tech Insights Blog | DigiCare";
       const blogsDesc = "Read expert articles, guides, and case studies on modern SEO, Generative Engine Optimization (GEO), custom website development, and content strategy.";
       const blogsKeywords = "blog, digital marketing insights, search engine optimization tips, generative engine optimization, content creation guides, DigiCare";
-      const blogsUrl = "https://gokulkrisnan-digital.web.app/blog";
+      const blogsUrl = "https://digicares.vercel.app/blog";
       const blogsImage = "https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&q=80&w=1200";
 
       document.title = blogsTitle;
@@ -163,7 +163,7 @@ export default function App() {
       const homeTitle = "DigiCare | Best SEO, GEO & Web Performance Agency";
       const homeDesc = "DigiCare is a high-performance digital marketing agency featuring advanced SEO, GEO, PPC, analytics services, client case studies, dynamic testimonial carousels, and an interactive contact manager.";
       const homeKeywords = "SEO, GEO, Generative Engine Optimization, Search Engine Optimization, Website Development, Content Creation, DigiCare, digital marketing, ChatGPT search optimization, Gemini visibility, Perplexity optimization";
-      const homeUrl = "https://gokulkrisnan-digital.web.app/";
+      const homeUrl = "https://digicares.vercel.app/";
       const homeImage = "https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&q=80&w=1200";
 
       document.title = homeTitle;

@@ -1,35 +1,31 @@
-# Gokul Krisnan Digital
+# DigiCare
 
-Gokul Krisnan Digital is a premium, high-performance digital marketing and web development agency based in Salem, Tamil Nadu, India. Specializing in advanced Google Search Engine Optimization (SEO), Generative Engine Optimization (GEO) for AI engines, custom high-speed Website Development, professional Content Creation, and visual Poster Creation.
+DigiCare is a high-performance digital marketing and web development agency. Specializing in advanced Google Search Engine Optimization (SEO), Generative Engine Optimization (GEO) for AI search engines, high-speed Website Development, Pay-Per-Click (PPC) campaigns, dynamic analytics, and complete interactive web solution services.
 
 ## Contact Details
-- **Founder & CEO:** Gokul Krisnan
-- **Email:** gokulkrisnan.digital@gmail.com
-- **Phone:** +91 8667576957
-- **Location:** Salem, Tamil Nadu, India
-- **Website:** https://gokulkrisnan-digital.web.app/
+- **Email:** krishnan989756@gmail.com
+- **Website:** https://digicares.vercel.app/
 
 ## Core Offerings & Specialized Services
 
 ### 1. Search Engine Optimization (SEO)
 - Enterprise-grade organic search rankings and targeted search volume capture.
 - Complete technical SEO auditing, crawlability improvements, indexing strategies, and Structured JSON-LD Schema markup.
-- Dominant local SEO targeting Salem, Tamil Nadu, and regional Indian markets.
-- Secure, high-authority contextual backlink strategy and brand citation building.
+- High-authority contextual link building and local SEO optimization.
 
-### 2. Website Development
-- Blazing-fast responsive React web applications powered by modern Vite & tailwindcss.
-- Semantic, highly indexable structures engineered for speed and superior User Experience (UX), leading to boosted click-through rates (CTR).
+### 2. Website Development & Performance
+- Blazing-fast responsive React web applications powered by modern Vite & Tailwind CSS.
+- Semantic, highly indexable structures engineered for speed and superior User Experience (UX), leading to boosted conversion rates.
 
 ### 3. Generative Engine Optimization (GEO)
-- Advanced strategies to optimize brand references, semantic embeds, and answer visibility in leading AI search and discovery platforms including ChatGPT Search, Google Gemini, and Perplexity.
+- Advanced strategies to optimize brand references, semantic embeds, and answer visibility in leading AI search and discovery platforms including ChatGPT Search, Google Gemini, and Perplexity AI.
 - Formatting site content to be contextually rich and highly referenceable for conversational agent crawling.
 
-### 4. Content Creation
-- In-depth, high-authority long-form industry blog posts, targeted marketing copy, and optimized lead magnet guides.
+### 4. Paid Search & PPC Campaigns
+- Optimized pay-per-click strategies designed to maximize return on ad spend (ROAS) across search networks and social media.
 
-### 5. Poster Creation
-- Eye-catching visual branding, graphics design, and social media creative collateral.
+### 5. Content & Brand Strategy
+- In-depth, high-authority long-form industry blog posts, targeted marketing copy, and optimized lead magnet guides.
 
 ## Social Profiles
 - **Instagram:** https://www.instagram.com/digi_cares?igsh=MXN5YzN1b2tsOTRzZQ==

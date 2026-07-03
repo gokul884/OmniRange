@@ -1,7 +1,7 @@
-https://gokulkrisnan-digital.web.app/
-https://gokulkrisnan-digital.web.app/blog
-https://gokulkrisnan-digital.web.app/blog/1
-https://gokulkrisnan-digital.web.app/blog/2
-https://gokulkrisnan-digital.web.app/blog/3
-https://gokulkrisnan-digital.web.app/blog/4
-https://gokulkrisnan-digital.web.app/blog/5
+https://digicares.vercel.app/
+https://digicares.vercel.app/blog
+https://digicares.vercel.app/blog/1
+https://digicares.vercel.app/blog/2
+https://digicares.vercel.app/blog/3
+https://digicares.vercel.app/blog/4
+https://digicares.vercel.app/blog/5
