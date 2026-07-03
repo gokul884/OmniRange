@@ -149,6 +149,7 @@ export default function Testimonials() {
                       src={test.avatar}
                       loading="lazy"
                       decoding="async"
+                      referrerPolicy="no-referrer"
                     />
                     <div>
                       <p className="font-headline font-bold text-xs text-on-surface">

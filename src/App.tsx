@@ -476,6 +476,9 @@ export default function App() {
                             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" 
                             alt={post.title}
                             src={post.image}
+                            loading="lazy"
+                            decoding="async"
+                            referrerPolicy="no-referrer"
                           />
                           <div className="absolute top-3 left-3 bg-white/95 backdrop-blur px-2.5 py-1 rounded-full text-[10px] font-bold text-primary shadow-sm">
                             {post.category}
@@ -504,7 +507,14 @@ export default function App() {
 
                       <div className="pt-2 flex items-center justify-between border-t border-surface-variant/30 mt-2">
                         <div className="flex items-center gap-2">
-                          <img className="w-6 h-6 rounded-full object-cover" src={post.authorAvatar} alt={post.author} />
+                          <img 
+                            className="w-6 h-6 rounded-full object-cover" 
+                            src={post.authorAvatar} 
+                            alt={post.author} 
+                            loading="lazy"
+                            decoding="async"
+                            referrerPolicy="no-referrer"
+                          />
                           <span className="text-[10px] text-on-surface font-semibold">{post.author}</span>
                         </div>
                         <span className="inline-flex items-center gap-1 font-bold text-xs text-primary group-hover:translate-x-1 transition-transform">

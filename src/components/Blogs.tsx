@@ -457,6 +457,9 @@ export default function Blogs({ readingArticle, onSelectArticle }: BlogsProps) {
                           className="w-11 h-11 rounded-full object-cover border-2 border-white shadow-sm" 
                           alt={readingArticle.author} 
                           src={readingArticle.authorAvatar} 
+                          loading="lazy"
+                          decoding="async"
+                          referrerPolicy="no-referrer"
                         />
                         <div>
                           <p className="font-headline font-bold text-xs text-on-surface leading-none">
@@ -480,6 +483,8 @@ export default function Blogs({ readingArticle, onSelectArticle }: BlogsProps) {
                       className="w-full h-full object-cover" 
                       alt={readingArticle.title} 
                       src={readingArticle.image} 
+                      decoding="async"
+                      referrerPolicy="no-referrer"
                     />
                   </div>
 
@@ -686,6 +691,9 @@ export default function Blogs({ readingArticle, onSelectArticle }: BlogsProps) {
                             className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" 
                             src={post.image} 
                             alt={post.title} 
+                            loading="lazy"
+                            decoding="async"
+                            referrerPolicy="no-referrer"
                           />
                         </div>
 
