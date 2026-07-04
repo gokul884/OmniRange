@@ -102,7 +102,7 @@ export default function Navbar({ onContactClick, onAdminToggle, isAdminOpen, lea
           className="flex items-center cursor-pointer hover:opacity-90 transition-opacity"
         >
           <img 
-            src="/logo-full-1.png" 
+            src="/logo-full.png" 
             alt="OmniRange Logo" 
             width={220}
             height={56}
