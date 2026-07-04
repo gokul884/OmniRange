@@ -21,6 +21,7 @@ import { Mail, Phone, MapPin, Globe, ShieldCheck, Heart, Clock, ArrowUpRight, In
 import { onAuthStateChanged, User } from 'firebase/auth';
 import { doc, collection, setDoc, deleteDoc, updateDoc, onSnapshot } from 'firebase/firestore';
 import { db, auth, signInWithGoogle, logOut, handleFirestoreError, OperationType } from './firebase';
+import { generateMetaTags } from './utils/seo';
 
 export default function App() {
   const [leads, setLeads] = useState<Lead[]>([]);
@@ -79,110 +80,63 @@ export default function App() {
 
   // Professional SEO & GEO Dynamic Meta Tag Generator
   useEffect(() => {
-    const updateOrCreateMeta = (nameOrProperty: string, contentValue: string) => {
-      const isProperty = nameOrProperty.startsWith('og:') || nameOrProperty.startsWith('fb:');
-      const attributeName = isProperty ? 'property' : 'name';
-      const selector = `meta[${attributeName}="${nameOrProperty}"]`;
-      
-      let element = document.querySelector(selector);
-      if (!element) {
-        element = document.createElement('meta');
-        element.setAttribute(attributeName, nameOrProperty);
-        document.head.appendChild(element);
-      }
-      element.setAttribute('content', contentValue);
-    };
-
-    const updateCanonical = (url: string) => {
-      let element = document.querySelector('link[rel="canonical"]');
-      if (!element) {
-        element = document.createElement('link');
-        element.setAttribute('rel', 'canonical');
-        document.head.appendChild(element);
-      }
-      element.setAttribute('href', url);
-    };
-
     if (readingArticle) {
       // 1. Dynamic metadata when reading a specific blog article
-      const postTitle = `${readingArticle.title} | DigiCare`;
+      const postTitle = `${readingArticle.title} | OmniRange`;
       const postDesc = readingArticle.description;
       const postKeywords = readingArticle.metaKeywords 
-        ? `${readingArticle.metaKeywords}, ${readingArticle.category}, SEO, GEO, Web Development, DigiCare`
-        : `${readingArticle.category}, ${readingArticle.title}, SEO, GEO, Web Development, DigiCare`;
+        ? `${readingArticle.metaKeywords}, ${readingArticle.category}, SEO, GEO, Web Development, OmniRange`
+        : `${readingArticle.category}, ${readingArticle.title}, SEO, GEO, Web Development, OmniRange`;
       const postAuthor = readingArticle.author;
       const postImage = readingArticle.image;
-      const postUrl = `https://digicares.vercel.app/blog/${readingArticle.id}`;
+      const postUrl = `https://omniorange.vercel.app/blog/${readingArticle.id}`;
 
-      document.title = postTitle;
-      updateOrCreateMeta('description', postDesc);
-      updateOrCreateMeta('keywords', postKeywords);
-      updateOrCreateMeta('author', postAuthor);
-      updateCanonical(postUrl);
-
-      // Open Graph Tags for Social Media & AI crawlers
-      updateOrCreateMeta('og:type', 'article');
-      updateOrCreateMeta('og:title', postTitle);
-      updateOrCreateMeta('og:description', postDesc);
-      updateOrCreateMeta('og:image', postImage);
-      updateOrCreateMeta('og:url', postUrl);
-
-      // Twitter Cards
-      updateOrCreateMeta('twitter:title', postTitle);
-      updateOrCreateMeta('twitter:description', postDesc);
-      updateOrCreateMeta('twitter:image', postImage);
-
+      generateMetaTags({
+        title: postTitle,
+        description: postDesc,
+        keywords: postKeywords,
+        author: postAuthor,
+        ogImage: postImage,
+        ogType: 'article',
+        ogUrl: postUrl,
+        canonical: postUrl
+      });
     } else if (currentView === 'blogs') {
       // 2. Dynamic metadata for the Blog Listing view
-      const blogsTitle = "Growth & Tech Insights Blog | DigiCare";
+      const blogsTitle = "Growth & Tech Insights Blog | OmniRange";
       const blogsDesc = "Read expert articles, guides, and case studies on modern SEO, Generative Engine Optimization (GEO), custom website development, and content strategy.";
-      const blogsKeywords = "blog, digital marketing insights, search engine optimization tips, generative engine optimization, content creation guides, DigiCare";
-      const blogsUrl = "https://digicares.vercel.app/blog";
+      const blogsKeywords = "blog, digital marketing insights, search engine optimization tips, generative engine optimization, content creation guides, OmniRange";
+      const blogsUrl = "https://omniorange.vercel.app/blog";
       const blogsImage = "https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&q=80&w=1200";
 
-      document.title = blogsTitle;
-      updateOrCreateMeta('description', blogsDesc);
-      updateOrCreateMeta('keywords', blogsKeywords);
-      updateOrCreateMeta('author', 'DigiCare');
-      updateCanonical(blogsUrl);
-
-      // Open Graph
-      updateOrCreateMeta('og:type', 'website');
-      updateOrCreateMeta('og:title', blogsTitle);
-      updateOrCreateMeta('og:description', blogsDesc);
-      updateOrCreateMeta('og:image', blogsImage);
-      updateOrCreateMeta('og:url', blogsUrl);
-
-      // Twitter Cards
-      updateOrCreateMeta('twitter:title', blogsTitle);
-      updateOrCreateMeta('twitter:description', blogsDesc);
-      updateOrCreateMeta('twitter:image', blogsImage);
-
+      generateMetaTags({
+        title: blogsTitle,
+        description: blogsDesc,
+        keywords: blogsKeywords,
+        author: 'OmniRange',
+        ogImage: blogsImage,
+        ogType: 'website',
+        ogUrl: blogsUrl,
+        canonical: blogsUrl
+      });
     } else {
       // 3. Reset/Restore main homepage SEO metadata
-      const homeTitle = "DigiCare | Best SEO, GEO & Web Performance Agency";
-      const homeDesc = "DigiCare is a high-performance digital marketing agency featuring advanced SEO, GEO, PPC, analytics services, client case studies, dynamic testimonial carousels, and an interactive contact manager.";
-      const homeKeywords = "SEO, GEO, Generative Engine Optimization, Search Engine Optimization, Website Development, Content Creation, DigiCare, digital marketing, ChatGPT search optimization, Gemini visibility, Perplexity optimization";
-      const homeUrl = "https://digicares.vercel.app/";
+      const homeTitle = "OmniRange | Best SEO, GEO & Web Performance Agency";
+      const homeDesc = "OmniRange is a high-performance digital marketing agency featuring advanced SEO, GEO, PPC, analytics services, client case studies, dynamic testimonial carousels, and an interactive contact manager.";
+      const homeKeywords = "SEO, GEO, Generative Engine Optimization, Search Engine Optimization, Website Development, Content Creation, OmniRange, digital marketing, ChatGPT search optimization, Gemini visibility, Perplexity optimization";
+      const homeUrl = "https://omniorange.vercel.app/";
       const homeImage = "https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&q=80&w=1200";
 
-      document.title = homeTitle;
-      updateOrCreateMeta('description', homeDesc);
-      updateOrCreateMeta('keywords', homeKeywords);
-      updateOrCreateMeta('author', 'DigiCare');
-      updateCanonical(homeUrl);
-
-      // Open Graph
-      updateOrCreateMeta('og:type', 'website');
-      updateOrCreateMeta('og:title', homeTitle);
-      updateOrCreateMeta('og:description', homeDesc);
-      updateOrCreateMeta('og:image', homeImage);
-      updateOrCreateMeta('og:url', homeUrl);
-
-      // Twitter Cards
-      updateOrCreateMeta('twitter:title', homeTitle);
-      updateOrCreateMeta('twitter:description', homeDesc);
-      updateOrCreateMeta('twitter:image', homeImage);
+      generateMetaTags({
+        title: homeTitle,
+        description: homeDesc,
+        keywords: homeKeywords,
+        author: 'OmniRange',
+        ogImage: homeImage,
+        ogType: 'website',
+        ogUrl: homeUrl,
+        canonical: homeUrl
+      });
     }
   }, [currentView, readingArticle]);
 
@@ -386,7 +340,7 @@ export default function App() {
             
             <div className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop text-center space-y-4 relative z-10">
               <h1 className="font-display font-extrabold text-display-lg-mobile md:text-headline-lg text-on-surface leading-tight tracking-tight max-w-2xl mx-auto">
-                Digicare Growth Hub
+                OmniRange Growth Hub
               </h1>
               <p className="font-sans text-body-md text-on-surface-variant max-w-xl mx-auto">
                 Discover the latest strategy breakdowns, technical performance studies, and creative branding models from our master consultants.
@@ -549,25 +503,17 @@ export default function App() {
             
             {/* Branding & Mission details */}
             <div className="space-y-4 col-span-1 md:col-span-2">
-              <div className="flex items-center gap-2.5">
-                <CompanyLogo className="w-8 h-8 shrink-0" />
-                <div className="flex flex-col items-start -space-y-1">
-                  <span className="font-headline font-extrabold text-lg md:text-xl tracking-tight bg-gradient-to-r from-[#0052FF] to-[#FF3D00] bg-clip-text text-transparent uppercase">
-                    DIGICARE
-                  </span>
-                  <span className="text-[7px] md:text-[8px] uppercase tracking-widest text-white/50 font-bold">
-                    — Affordable Digital Solutions —
-                  </span>
-                </div>
+              <div className="flex items-center">
+                <CompanyLogo variant="full" theme="dark" className="h-12 md:h-14 w-auto shrink-0" />
               </div>
               <p className="text-xs text-secondary-fixed opacity-70 leading-relaxed max-w-sm">
-                Engineering high-performance organic SEO rankings, attribution mapping, and enterprise-grade conversion architectures for forward-thinking brands globally.
+                Engineering high-performance organic SEO rankings, attribution mapping, and enterprise-grade conversion architectures for forward-thinking brands. Explore our official resources at <a href="https://omniorange.vercel.app/" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline font-bold">OmniRange Web Portal</a>.
               </p>
               
               {/* Social Media Share / Follow Icons */}
               <div className="flex items-center gap-3 pt-2">
                 <a 
-                  href="https://www.instagram.com/digi_cares?igsh=MXN5YzN1b2tsOTRzZQ==" 
+                  href="https://www.instagram.com/omniorange" 
                   target="_blank" 
                   rel="noopener noreferrer" 
                   className="p-2 rounded-full bg-white/5 hover:bg-white/10 hover:text-primary-container transition-all text-secondary-fixed text-white cursor-pointer"
@@ -702,10 +648,10 @@ export default function App() {
           {/* Bottom Bar copyright */}
           <div className="pt-8 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-4 text-[11px] text-secondary-fixed opacity-60">
             <p>
-              &copy; {new Date().getFullYear()} Digicare , All Rights Reserved
+              &copy; {new Date().getFullYear()} <a href="https://omniorange.vercel.app/" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors font-bold">OmniRange</a>, All Rights Reserved
             </p>
             <p className="flex items-center gap-1">
-              Crafted for Growth with <Heart className="w-3 h-3 text-red-500 fill-red-500" />
+              Crafted for Growth with <Heart className="w-3 h-3 text-red-500 fill-red-500" /> by <a href="https://omniorange.vercel.app/" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors font-semibold underline decoration-dotted">OmniRange Performance Agency</a>
             </p>
           </div>
 

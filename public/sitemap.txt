@@ -1,7 +1,7 @@
-https://digicares.vercel.app/
-https://digicares.vercel.app/blog
-https://digicares.vercel.app/blog/1
-https://digicares.vercel.app/blog/2
-https://digicares.vercel.app/blog/3
-https://digicares.vercel.app/blog/4
-https://digicares.vercel.app/blog/5
+https://omniorange.vercel.app/
+https://omniorange.vercel.app/blog
+https://omniorange.vercel.app/blog/1
+https://omniorange.vercel.app/blog/2
+https://omniorange.vercel.app/blog/3
+https://omniorange.vercel.app/blog/4
+https://omniorange.vercel.app/blog/5

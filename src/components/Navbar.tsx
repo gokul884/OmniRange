@@ -100,12 +100,9 @@ export default function Navbar({ onContactClick, onAdminToggle, isAdminOpen, lea
             onViewChange('main');
             window.scrollTo({ top: 0, behavior: 'smooth' });
           }}
-          className="flex items-center gap-2.5 cursor-pointer hover:opacity-90 transition-opacity"
+          className="flex items-center cursor-pointer hover:opacity-90 transition-opacity"
         >
-          <CompanyLogo className="w-8 h-8 shrink-0" />
-          <span className="font-headline font-extrabold text-lg md:text-xl tracking-tight bg-gradient-to-r from-[#0052FF] to-[#FF3D00] bg-clip-text text-transparent uppercase">
-            DIGICARE
-          </span>
+          <CompanyLogo variant="full" theme="light" className="h-12 md:h-14 w-auto shrink-0" />
         </div>
 
         {/* Links Navigation (Desktop) */}
@@ -153,7 +150,7 @@ export default function Navbar({ onContactClick, onAdminToggle, isAdminOpen, lea
       {/* Mobile Menu Dropdown Panel */}
       <div 
         className={`md:hidden absolute top-full left-2 right-2 mt-2 bg-white/95 backdrop-blur-md border border-surface-variant/30 shadow-xl rounded-2xl overflow-hidden transition-all duration-300 ${
-          isMobileMenuOpen ? 'max-h-64 opacity-100 py-4 px-4' : 'max-h-0 opacity-0 pointer-events-none py-0 px-4'
+          isMobileMenuOpen ? 'max-h-[400px] opacity-100 py-4 px-4' : 'max-h-0 opacity-0 pointer-events-none py-0 px-4'
         }`}
       >
         <div className="flex flex-col gap-3.5 text-xs font-semibold">
@@ -164,7 +161,7 @@ export default function Navbar({ onContactClick, onAdminToggle, isAdminOpen, lea
               href={`#${item.id}`}
               className={`py-1.5 px-3 rounded-lg transition-colors ${
                 activeSection === item.id 
-                  ? 'bg-primary-container/40 text-primary font-bold' 
+                  ? 'bg-primary/10 text-primary font-extrabold' 
                   : 'text-on-surface-variant hover:text-primary hover:bg-surface-container/20'
               }`}
             >

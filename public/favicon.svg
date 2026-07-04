@@ -1,50 +1,217 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
-  <!-- Orange/Yellow Crescent Sweep (Right side of the 'D') -->
-  <path
-    d="M50 10C68 10 85 24 85 50C85 76 68 90 50 90C45 90 41 89 37 87C52 80 65 66 65 50C65 34 52 20 37 13C41 11 45 10 50 10Z"
-    fill="url(#logo-orange-grad)"
-  />
-  
-  <!-- Blue top and bottom blocks of the 'D' -->
-  <path
-    d="M25 10H50C53 10 55.5 11 57.5 12.5C51 16 45 22 45 28H25V10Z"
-    fill="url(#logo-blue-grad)"
-  />
-  <path
-    d="M25 72H45C45 78 51 84 57.5 87.5C55.5 89 53 90 50 90H25V72Z"
-    fill="url(#logo-blue-grad)"
-  />
-  
-  <!-- Circuit lines and nodes extending to the left -->
-  <!-- Middle Branch 1 (Top straight branch) -->
-  <path d="M21 34H44" stroke="#0052FF" stroke-width="2.5" stroke-linecap="round"/>
-  <circle cx="21" cy="34" r="3.5" fill="white" stroke="#0052FF" stroke-width="2.5"/>
-  <circle cx="44" cy="34" r="3.5" fill="white" stroke="#0052FF" stroke-width="2.5"/>
-
-  <!-- Middle Branch 2 (Branching line in the middle) -->
-  <path d="M15 44H31" stroke="#0052FF" stroke-width="2.5" stroke-linecap="round"/>
-  <circle cx="15" cy="44" r="3.5" fill="white" stroke="#0052FF" stroke-width="2.5"/>
-  
-  <!-- Branch split path -->
-  <path d="M31 44L22 55" stroke="#0052FF" stroke-width="2.5" stroke-linecap="round"/>
-  <path d="M31 44L44 53" stroke="#0052FF" stroke-width="2.5" stroke-linecap="round"/>
-  <circle cx="22" cy="55" r="3.5" fill="white" stroke="#0052FF" stroke-width="2.5"/>
-  <circle cx="44" cy="53" r="3.5" fill="white" stroke="#0052FF" stroke-width="2.5"/>
-
-  <!-- Middle Branch 3 (Bottom straight branch) -->
-  <path d="M23 59H38" stroke="#0052FF" stroke-width="2.5" stroke-linecap="round"/>
-  <circle cx="23" cy="59" r="3.5" fill="white" stroke="#0052FF" stroke-width="2.5"/>
-
-  <!-- Gradients -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" fill="none">
   <defs>
-    <linearGradient id="logo-orange-grad" x1="50" y1="10" x2="85" y2="90" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#FFA000"/>
-      <stop offset="50%" stop-color="#FF6B00"/>
-      <stop offset="100%" stop-color="#FF3D00"/>
+    <!-- Deep 3D Shadow for Realistic Lighting -->
+    <filter id="logo-real-depth" x="-15%" y="-15%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="5" stdDeviation="5" flood-color="#000000" flood-opacity="0.25" />
+    </filter>
+
+    <!-- --- BLUE "O" RING GRADIENTS --- -->
+    <!-- Base 3D Shading -->
+    <linearGradient id="blue-base-3d" x1="20" y1="20" x2="90" y2="90" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#00F0FF" />
+      <stop offset="30%" stop-color="#0072FF" />
+      <stop offset="70%" stop-color="#0025B0" />
+      <stop offset="100%" stop-color="#010A45" />
     </linearGradient>
-    <linearGradient id="logo-blue-grad" x1="25" y1="10" x2="57.5" y2="90" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#0052FF"/>
-      <stop offset="100%" stop-color="#002D9C"/>
+
+    <!-- Specular Cylindrical Glow for Blue Ring -->
+    <linearGradient id="blue-specular" x1="25" y1="25" x2="60" y2="60" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.65" />
+      <stop offset="50%" stop-color="#00F0FF" stop-opacity="0.15" />
+      <stop offset="100%" stop-color="#0072FF" stop-opacity="0" />
+    </linearGradient>
+
+    <!-- --- ORANGE/RED "R" LOOP GRADIENTS --- -->
+    <!-- Base 3D Shading -->
+    <linearGradient id="orange-base-3d" x1="80" y1="20" x2="150" y2="90" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FFE600" />
+      <stop offset="25%" stop-color="#FF6A00" />
+      <stop offset="65%" stop-color="#E60000" />
+      <stop offset="100%" stop-color="#800000" />
+    </linearGradient>
+
+    <!-- Specular Gloss for Orange Ring -->
+    <linearGradient id="orange-specular" x1="85" y1="20" x2="120" y2="55" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.7" />
+      <stop offset="45%" stop-color="#FFE600" stop-opacity="0.25" />
+      <stop offset="100%" stop-color="#FF6A00" stop-opacity="0" />
+    </linearGradient>
+
+    <!-- --- INTERLOCKING CROSSOVER GRADIENTS --- -->
+    <!-- Blended crossover bridge (Gold/Orange gradient) -->
+    <linearGradient id="crossover-3d" x1="40" y1="80" x2="110" y2="30" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FF6A00" />
+      <stop offset="35%" stop-color="#FFE600" />
+      <stop offset="70%" stop-color="#00F0FF" />
+      <stop offset="100%" stop-color="#0072FF" />
+    </linearGradient>
+
+    <!-- Red Leg Gradient -->
+    <linearGradient id="leg-3d" x1="105" y1="50" x2="145" y2="105" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FF5100" />
+      <stop offset="45%" stop-color="#D60000" />
+      <stop offset="100%" stop-color="#660000" />
     </linearGradient>
   </defs>
+
+  <g filter="url(#logo-real-depth)" transform="translate(0, 20)">
+    <!-- ========================================== -->
+    <!-- 1. BLUE RING (O) - BACK LAYER (under crossover) -->
+    <!-- ========================================== -->
+    <path
+      d="M 55 18
+         C 34.56 18, 18 34.56, 18 55
+         C 18 63.8, 21.1 71.9, 26.2 78.2
+         L 37.8 69.8
+         C 34.8 65.6, 33 60.5, 33 55
+         C 33 42.85, 42.85 33, 55 33
+         C 60.5 33, 65.6 34.8, 69.8 37.8
+         L 78.2 26.2
+         C 71.9 21.1, 63.8 18, 55 18 Z"
+      fill="url(#blue-base-3d)"
+    />
+    
+    <!-- Specular Glow overlay on Blue Back -->
+    <path
+      d="M 55 18
+         C 34.56 18, 18 34.56, 18 55
+         C 18 63.8, 21.1 71.9, 26.2 78.2
+         L 37.8 69.8
+         C 34.8 65.6, 33 60.5, 33 55
+         C 33 42.85, 42.85 33, 55 33
+         C 60.5 33, 65.6 34.8, 69.8 37.8
+         L 78.2 26.2
+         C 71.9 21.1, 63.8 18, 55 18 Z"
+      fill="url(#blue-specular)"
+    />
+
+    <!-- ========================================== -->
+    <!-- 2. ORANGE LOOP (R) - BACK LAYER -->
+    <!-- ========================================== -->
+    <path
+      d="M 105 18
+         C 125.44 18, 142 34.56, 142 55
+         C 142 75.44, 125.44 92, 105 92
+         C 96.2 92, 88.1 88.9, 81.8 83.8
+         L 90.2 72.2
+         C 94.4 75.2, 99.5 77, 105 77
+         C 117.15 77, 127 67.15, 127 55
+         C 127 42.85, 117.15 33, 105 33
+         C 99.5 33, 94.4 34.8, 90.2 37.8
+         L 81.8 26.2
+         C 88.1 21.1, 96.2 18, 105 18 Z"
+      fill="url(#orange-base-3d)"
+      opacity="0.9"
+    />
+
+    <!-- ========================================== -->
+    <!-- 3. THE 3D INTERLOCKING CROSSOVER RIBBON -->
+    <!-- ========================================== -->
+    <path
+      d="M 26.2 78.2
+         C 33.5 71, 46.5 58, 65 44
+         C 74 37, 85.5 29.5, 93.8 25.5
+         L 102.2 37.1
+         C 94 41.5, 84 48, 74 56.5
+         C 55.5 71, 41.5 82.5, 33.8 85.5
+         Z"
+      fill="url(#crossover-3d)"
+    />
+
+    <!-- Dynamic 3D Highlight Stroke along the ribbon axis -->
+    <line
+      x1="30" y1="81" x2="98" y2="31"
+      stroke="#FFFFFF"
+      stroke-width="3"
+      stroke-linecap="round"
+      opacity="0.45"
+    />
+
+    <!-- ========================================== -->
+    <!-- 4. BLUE RING (O) - FRONT LAYER (over crossover) -->
+    <!-- ========================================== -->
+    <path
+      d="M 55 92
+         C 75.44 92, 92 75.44, 92 55
+         C 92 46.2, 88.9 38.1, 83.8 31.8
+         L 72.2 40.2
+         C 75.2 44.4, 77 49.5, 77 55
+         C 77 67.15, 67.15 77, 55 77
+         C 49.5 77, 44.4 75.2, 40.2 72.2
+         L 31.8 83.8
+         C 38.1 88.9, 46.2 92, 55 92 Z"
+      fill="url(#blue-base-3d)"
+    />
+
+    <!-- Specular Highlight overlay on Blue Front -->
+    <path
+      d="M 55 92
+         C 75.44 92, 92 75.44, 92 55
+         C 92 46.2, 88.9 38.1, 83.8 31.8
+         L 72.2 40.2
+         C 75.2 44.4, 77 49.5, 77 55
+         C 77 67.15, 67.15 77, 55 77
+         C 49.5 77, 44.4 75.2, 40.2 72.2
+         L 31.8 83.8
+         C 38.1 88.9, 46.2 92, 55 92 Z"
+      fill="url(#blue-specular)"
+    />
+
+    <!-- ========================================== -->
+    <!-- 5. ORANGE LOOP (R) - FRONT LAYER -->
+    <!-- ========================================== -->
+    <path
+      d="M 105 18
+         C 125.44 18, 142 34.56, 142 55
+         C 142 75.44, 125.44 92, 105 92
+         C 96.2 92, 88.1 88.9, 81.8 83.8
+         L 90.2 72.2
+         C 94.4 75.2, 99.5 77, 105 77
+         C 117.15 77, 127 67.15, 127 55
+         C 127 42.85, 117.15 33, 105 33
+         C 99.5 33, 94.4 34.8, 90.2 37.8
+         L 81.8 26.2
+         C 88.1 21.1, 96.2 18, 105 18 Z"
+      fill="url(#orange-base-3d)"
+    />
+
+    <!-- Specular gloss overlay for Orange Loop -->
+    <path
+      d="M 105 18
+         C 125.44 18, 142 34.56, 142 55
+         C 142 75.44, 125.44 92, 105 92
+         C 96.2 92, 88.1 88.9, 81.8 83.8
+         L 90.2 72.2
+         C 94.4 75.2, 99.5 77, 105 77
+         C 117.15 77, 127 67.15, 127 55
+         C 127 42.85, 117.15 33, 105 33
+         C 99.5 33, 94.4 34.8, 90.2 37.8
+         L 81.8 26.2
+         C 88.1 21.1, 96.2 18, 105 18 Z"
+      fill="url(#orange-specular)"
+    />
+
+    <!-- ========================================== -->
+    <!-- 6. THE SWEEPING R LEG -->
+    <!-- ========================================== -->
+    <path
+      d="M 98 52
+         C 103 56, 109 63, 115 71
+         L 133 95
+         C 136.5 99, 141.5 100, 144 97
+         C 146.5 94, 145.5 89, 141.5 84
+         L 121 56
+         C 115 48.5, 108 45.5, 98 52 Z"
+      fill="url(#leg-3d)"
+    />
+
+    <!-- Specular highlight down the center of the R leg -->
+    <line
+      x1="111" y1="60" x2="134" y2="91"
+      stroke="#FFFFFF"
+      stroke-width="2.2"
+      stroke-linecap="round"
+      opacity="0.32"
+    />
+  </g>
 </svg>

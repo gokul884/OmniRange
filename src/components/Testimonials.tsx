@@ -50,7 +50,7 @@ export default function Testimonials() {
             </p>
             
             {/* Nav Arrows */}
-            <div className="flex gap-4 justify-center lg:justify-start pt-2">
+            <div className="hidden lg:flex gap-4 justify-center lg:justify-start pt-2">
               <button
                 onClick={handlePrev}
                 className="w-12 h-12 rounded-full border border-outline flex items-center justify-center bg-white hover:bg-primary-container hover:border-primary-container hover:text-white transition-all shadow-sm active:scale-90"
@@ -164,6 +164,26 @@ export default function Testimonials() {
                 </div>
               ))
             )}
+          </div>
+
+          {/* Mobile Nav Arrows (shown only below lg viewport) */}
+          <div className="flex lg:hidden gap-4 justify-center w-full pt-4">
+            <button
+              onClick={handlePrev}
+              className="w-12 h-12 rounded-full border border-outline flex items-center justify-center bg-white hover:bg-primary hover:border-primary hover:text-white transition-all shadow-sm active:scale-90 text-on-surface"
+              aria-label="Previous Testimonial"
+              id="testimonial-prev-mobile"
+            >
+              <ChevronLeft className="w-5 h-5" />
+            </button>
+            <button
+              onClick={handleNext}
+              className="w-12 h-12 rounded-full border border-outline flex items-center justify-center bg-white hover:bg-primary hover:border-primary hover:text-white transition-all shadow-sm active:scale-90 text-on-surface"
+              aria-label="Next Testimonial"
+              id="testimonial-next-mobile"
+            >
+              <ChevronRight className="w-5 h-5" />
+            </button>
           </div>
 
         </div>

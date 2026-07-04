@@ -179,6 +179,27 @@ export default function Blogs({ readingArticle, onSelectArticle }: BlogsProps) {
     return BLOGS_DATA.filter(post => post.id !== readingArticle.id);
   }, [readingArticle]);
 
+  // Dynamically compute 2-3 related posts for the active article based on matching categories
+  const relatedPosts = useMemo(() => {
+    if (!readingArticle) return [];
+    
+    // Find articles in the same category, excluding the current one
+    const sameCategory = BLOGS_DATA.filter(
+      (post) => post.category === readingArticle.category && post.id !== readingArticle.id
+    );
+    
+    // If we have fewer than 3 same-category posts, fill with other posts (excluding current)
+    if (sameCategory.length < 3) {
+      const remainingNeeded = 3 - sameCategory.length;
+      const others = BLOGS_DATA.filter(
+        (post) => post.category !== readingArticle.category && post.id !== readingArticle.id
+      );
+      return [...sameCategory, ...others.slice(0, remainingNeeded)];
+    }
+    
+    return sameCategory.slice(0, 3);
+  }, [readingArticle]);
+
   // Current comments for reading article
   const currentComments = useMemo(() => {
     if (!readingArticle) return [];
@@ -366,7 +387,7 @@ export default function Blogs({ readingArticle, onSelectArticle }: BlogsProps) {
           <div className="space-y-8 animate-fadeIn">
             
             {/* Back & Share Top Header Navigation Bar */}
-            <div className="flex items-center justify-between bg-white px-6 py-4 rounded-2xl border border-surface-variant/60 shadow-sm">
+            <div className="flex items-center justify-between bg-white px-4 py-3 sm:px-6 sm:py-4 rounded-2xl border border-surface-variant/60 shadow-sm">
               <button 
                 onClick={() => onSelectArticle(null)}
                 className="flex items-center gap-2 text-xs font-bold text-on-surface-variant hover:text-primary transition-colors group"
@@ -375,11 +396,11 @@ export default function Blogs({ readingArticle, onSelectArticle }: BlogsProps) {
                 <span>Back to Blog Hub</span>
               </button>
               
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2 sm:gap-3">
                 <span className="text-[10px] font-bold text-primary uppercase tracking-widest bg-primary/5 px-3 py-1 rounded-full border border-primary/15 hidden sm:inline-block">
                   {readingArticle.category} Focus
                 </span>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-1.5 sm:gap-2">
                   {/* Share on Twitter */}
                   <a
                     href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(readingArticle.title)}&url=${encodeURIComponent(window.location.href)}`}
@@ -405,21 +426,21 @@ export default function Blogs({ readingArticle, onSelectArticle }: BlogsProps) {
                   {/* Copy link */}
                   <button 
                     onClick={() => handleShareArticle(readingArticle.title)}
-                    className="px-4 py-2 rounded-full bg-surface-container hover:bg-surface-container-high border border-surface-variant/40 transition-all flex items-center gap-1.5 text-xs font-bold text-on-surface cursor-pointer"
+                    className="px-2.5 py-2 sm:px-4 sm:py-2 rounded-full bg-surface-container hover:bg-surface-container-high border border-surface-variant/40 transition-all flex items-center gap-1.5 text-xs font-bold text-on-surface cursor-pointer"
                   >
                     {copiedLink ? <Check className="w-3.5 h-3.5 text-green-600" /> : <Share2 className="w-3.5 h-3.5 text-primary" />}
-                    <span>{copiedLink ? 'Link Copied!' : 'Copy Link'}</span>
+                    <span className="hidden sm:inline">{copiedLink ? 'Link Copied!' : 'Copy Link'}</span>
                   </button>
 
                   {/* Print Article */}
                   <button 
                     onClick={() => window.print()}
-                    className="px-4 py-2 rounded-full bg-primary hover:bg-[#0e5fc2] hover:text-white transition-all flex items-center gap-1.5 text-xs font-bold text-white cursor-pointer shadow-sm shadow-blue-500/10 hover:shadow-md hover:scale-[1.02] active:scale-98"
+                    className="px-2.5 py-2 sm:px-4 sm:py-2 rounded-full bg-primary hover:bg-[#0e5fc2] hover:text-white transition-all flex items-center gap-1.5 text-xs font-bold text-white cursor-pointer shadow-sm shadow-blue-500/10 hover:shadow-md hover:scale-[1.02] active:scale-98"
                     title="Print Article"
                     id="print-article-btn"
                   >
                     <Printer className="w-3.5 h-3.5" />
-                    <span>Print Article</span>
+                    <span className="hidden sm:inline">Print Article</span>
                   </button>
                 </div>
               </div>
@@ -432,7 +453,7 @@ export default function Blogs({ readingArticle, onSelectArticle }: BlogsProps) {
               <div className="lg:col-span-8 space-y-8">
                 
                 {/* Main Article Container with print-friendly layout trigger */}
-                <div className="bg-white p-6 md:p-10 rounded-3xl border border-surface-variant shadow-soft space-y-8 printable-article">
+                <div className="bg-white p-4 sm:p-6 md:p-10 rounded-3xl border border-surface-variant shadow-soft space-y-8 printable-article">
                   
                   {/* Title & Metadata */}
                   <div className="space-y-4">
@@ -445,13 +466,13 @@ export default function Blogs({ readingArticle, onSelectArticle }: BlogsProps) {
                         <Clock className="w-3.5 h-3.5 text-primary" /> {readingArticle.readTime}
                       </span>
                     </div>
-
+ 
                     <h1 className="font-headline font-extrabold text-headline-lg text-on-surface leading-tight tracking-tight">
                       {readingArticle.title}
                     </h1>
-
+ 
                     {/* Author Premium Block (with special styling for print layout) */}
-                    <div className="flex items-center justify-between p-4 bg-surface-container rounded-2xl border border-surface-variant/50 author-block-print">
+                    <div className="flex flex-col sm:flex-row gap-4 sm:items-center justify-between p-4 bg-surface-container rounded-2xl border border-surface-variant/50 author-block-print">
                       <div className="flex items-center gap-3">
                         <img 
                           className="w-11 h-11 rounded-full object-cover border-2 border-white shadow-sm" 
@@ -470,13 +491,13 @@ export default function Blogs({ readingArticle, onSelectArticle }: BlogsProps) {
                           </p>
                         </div>
                       </div>
-                      <div className="text-right text-[10px] font-bold text-on-surface-variant/80 uppercase">
+                      <div className="text-left sm:text-right text-[10px] font-bold text-on-surface-variant/80 uppercase">
                         <span>Published</span>
                         <p className="text-xs text-on-surface mt-0.5">{readingArticle.date}</p>
                       </div>
                     </div>
                   </div>
-
+ 
                   {/* Featured Hero Banner */}
                   <div className="rounded-2xl overflow-hidden aspect-[16/9] border border-surface-variant/50 shadow-soft">
                     <img 
@@ -487,27 +508,27 @@ export default function Blogs({ readingArticle, onSelectArticle }: BlogsProps) {
                       referrerPolicy="no-referrer"
                     />
                   </div>
-
+ 
                   {/* Formatted Reading Content */}
-                  <div className="prose prose-sm max-w-none text-xs md:text-sm text-black leading-relaxed space-y-6 border-b border-surface-variant/30 pb-8">
+                  <div className="prose prose-sm max-w-none text-xs md:text-sm text-on-surface leading-relaxed space-y-6 border-b border-surface-variant/30 pb-8">
                     {readingArticle.content.split('\n\n').map((para, i) => {
                       if (para.trim().startsWith('### ')) {
                         return (
-                          <h2 key={i} className="font-headline font-extrabold text-headline-sm text-on-surface pt-4">
+                          <h2 key={i} className="font-headline font-extrabold text-lg md:text-xl text-on-surface pt-4">
                             {para.replace('### ', '')}
                           </h2>
                         );
                       }
                       if (para.trim().startsWith('#### ')) {
                         return (
-                          <h3 key={i} className="font-headline font-bold text-xs md:text-sm text-neutral-900 pt-2 uppercase tracking-wide">
+                          <h3 key={i} className="font-headline font-bold text-xs sm:text-sm md:text-base text-on-surface pt-2 uppercase tracking-wide">
                             {para.replace('#### ', '')}
                           </h3>
                         );
                       }
                       if (para.trim().startsWith('- ')) {
                         return (
-                          <ul key={i} className="list-disc pl-5 space-y-2 text-black font-sans">
+                          <ul key={i} className="list-disc pl-5 space-y-2 text-on-surface-variant font-sans">
                             {para.split('\n').map((li, idx) => (
                               <li key={idx} className="pl-1">{li.replace('- ', '')}</li>
                             ))}
@@ -515,12 +536,69 @@ export default function Blogs({ readingArticle, onSelectArticle }: BlogsProps) {
                         );
                       }
                       return (
-                        <p key={i} className="font-sans leading-relaxed text-black">
+                        <p key={i} className="font-sans leading-relaxed text-on-surface-variant">
                           {para.trim()}
                         </p>
                       );
                     })}
                   </div>
+
+                  {/* Related Posts Section based on matching tags / categories */}
+                  {relatedPosts.length > 0 && (
+                    <div className="border-t border-b border-surface-variant/40 py-8 my-8 space-y-6">
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                        <div className="flex items-center gap-2">
+                          <Sparkles className="w-4 h-4 text-primary" />
+                          <h3 className="font-headline font-extrabold text-sm uppercase tracking-wide text-on-surface">
+                            You Might Also Like
+                          </h3>
+                        </div>
+                        <span className="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest bg-surface-container px-2.5 py-1 rounded-md border border-surface-variant/40 w-fit">
+                          Related {readingArticle.category} Articles
+                        </span>
+                      </div>
+                      
+                      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                        {relatedPosts.map((post) => (
+                          <div 
+                            key={post.id}
+                            onClick={() => handleSelectArticle(post)}
+                            className="group cursor-pointer bg-surface-container/30 hover:bg-surface-container/60 p-4 rounded-2xl border border-surface-variant/30 hover:border-surface-variant/60 transition-all duration-300 flex flex-col justify-between space-y-4"
+                          >
+                            <div className="space-y-3">
+                              <div className="rounded-xl overflow-hidden aspect-[16/10] border border-surface-variant/40 shadow-sm relative">
+                                <img 
+                                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" 
+                                  alt={post.title}
+                                  src={post.image}
+                                  loading="lazy"
+                                  decoding="async"
+                                  referrerPolicy="no-referrer"
+                                />
+                              </div>
+                              <div className="space-y-1.5">
+                                <div className="flex items-center gap-1.5 text-[9px] font-bold text-on-surface-variant uppercase tracking-wider">
+                                  <span>{post.date}</span>
+                                  <span>&bull;</span>
+                                  <span className="flex items-center gap-0.5">
+                                    <Clock className="w-3 h-3 text-primary" /> {post.readTime}
+                                  </span>
+                                </div>
+                                <h4 className="font-headline font-bold text-xs sm:text-sm text-on-surface leading-snug group-hover:text-primary transition-colors line-clamp-2">
+                                  {post.title}
+                                </h4>
+                              </div>
+                            </div>
+                            <div className="pt-2 flex items-center justify-between border-t border-surface-variant/20 mt-1">
+                              <span className="text-[10px] text-primary font-bold group-hover:underline flex items-center gap-0.5">
+                                Read Article <ArrowUpRight className="w-3 h-3" />
+                              </span>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
 
                   {/* Dynamic Interactive Comments Block */}
                   <div className="space-y-6 pt-2">
@@ -602,13 +680,13 @@ export default function Blogs({ readingArticle, onSelectArticle }: BlogsProps) {
                             </div>
                           </div>
                           
-                          <p className="font-sans text-xs text-on-surface-variant leading-relaxed pl-10">
+                          <p className="font-sans text-xs text-on-surface-variant leading-relaxed pl-0 sm:pl-10 mt-2">
                             {comment.text}
                           </p>
                         </div>
                       ))}
                     </div>
-
+ 
                     {/* Join Discussion Form */}
                     <form onSubmit={handleAddComment} className="bg-surface-container/60 p-5 rounded-2xl border border-surface-variant/50 space-y-4">
                       <p className="text-xs font-headline font-bold text-on-surface uppercase tracking-wider">
@@ -621,7 +699,7 @@ export default function Blogs({ readingArticle, onSelectArticle }: BlogsProps) {
                           <span>Thank you! Your draft comment has been successfully published to this page.</span>
                         </div>
                       )}
-
+ 
                       <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
                         <div className="md:col-span-4 space-y-1">
                           <label className="text-[10px] font-bold text-on-surface-variant uppercase">Your Name</label>
@@ -646,11 +724,11 @@ export default function Blogs({ readingArticle, onSelectArticle }: BlogsProps) {
                           />
                         </div>
                       </div>
-
+ 
                       <div className="flex justify-end pt-1">
                         <button 
                           type="submit"
-                          className="bg-primary text-white hover:bg-primary-container hover:text-on-primary-container px-5 py-2 rounded-full font-headline text-xs font-bold flex items-center gap-1.5 transition-all shadow-sm"
+                          className="bg-primary text-white hover:bg-primary-container hover:text-on-primary-container px-5 py-2.5 rounded-full font-headline text-xs font-bold flex items-center justify-center gap-1.5 transition-all shadow-sm w-full sm:w-auto"
                         >
                           <span>Post Comment</span>
                           <Send className="w-3 h-3" />

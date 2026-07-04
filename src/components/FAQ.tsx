@@ -17,7 +17,7 @@ export default function FAQ() {
 
   const faqData: FAQItem[] = [
     {
-      question: "What specific digital marketing services does Digicare specialize in?",
+      question: "What specific digital marketing services does OmniRange specialize in?",
       answer: "We specialize in full-spectrum performance marketing and search engine optimization. This includes data-driven organic SEO strategies, custom landing page conversion rate optimization (CRO), high-performance paid search (SEM), unified attribution modeling, and enterprise growth analytics."
     },
     {
@@ -34,7 +34,7 @@ export default function FAQ() {
     },
     {
       question: "Can we track attribution and analytics performance in real time?",
-      answer: "Absolutely. Digicare builds unified marketing dashboards mapping full-funnel click-to-close attribution. Our clients gain secure portal access to real-time campaign performance, keyword rankings, conversion triggers, and direct return-on-ad-spend (ROAS) statistics."
+      answer: "Absolutely. OmniRange builds unified marketing dashboards mapping full-funnel click-to-close attribution. Our clients gain secure portal access to real-time campaign performance, keyword rankings, conversion triggers, and direct return-on-ad-spend (ROAS) statistics."
     }
   ];
 

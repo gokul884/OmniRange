@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://digicares.vercel.app/sitemap.txt
+Sitemap: https://omniorange.vercel.app/sitemap.xml

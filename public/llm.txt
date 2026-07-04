@@ -1,10 +1,10 @@
-# DigiCare
+# OmniRange
 
-DigiCare is a high-performance digital marketing and web development agency. Specializing in advanced Google Search Engine Optimization (SEO), Generative Engine Optimization (GEO) for AI search engines, high-speed Website Development, Pay-Per-Click (PPC) campaigns, dynamic analytics, and complete interactive web solution services.
+OmniRange is a high-performance digital marketing and web development agency. Specializing in advanced Google Search Engine Optimization (SEO), Generative Engine Optimization (GEO) for AI search engines, high-speed Website Development, Pay-Per-Click (PPC) campaigns, dynamic analytics, and complete interactive web solution services.
 
 ## Contact Details
 - **Email:** krishnan989756@gmail.com
-- **Website:** https://digicares.vercel.app/
+- **Website:** https://omniorange.vercel.app/
 
 ## Core Offerings & Specialized Services
 
@@ -28,5 +28,5 @@ DigiCare is a high-performance digital marketing and web development agency. Spe
 - In-depth, high-authority long-form industry blog posts, targeted marketing copy, and optimized lead magnet guides.
 
 ## Social Profiles
-- **Instagram:** https://www.instagram.com/digi_cares?igsh=MXN5YzN1b2tsOTRzZQ==
+- **Instagram:** https://www.instagram.com/omniorange
 - **Facebook:** https://www.facebook.com/share/1LjtyBfiDg/
