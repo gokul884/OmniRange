@@ -101,17 +101,14 @@ export default function Navbar({ onContactClick, onAdminToggle, isAdminOpen, lea
           }}
           className="flex items-center cursor-pointer hover:opacity-90 transition-opacity"
         >
-          <picture className="h-12 md:h-14 shrink-0 flex items-center">
-            <source srcSet="/logo-full-1.webp" type="image/webp" />
-            <img 
-              src="/logo-full-1.png" 
-              alt="OmniRange Logo" 
-              width={220}
-              height={56}
-              className="h-full w-auto mix-blend-multiply" 
-              referrerPolicy="no-referrer"
-            />
-          </picture>
+          <img 
+            src="/logo-full-1.webp" 
+            alt="OmniRange Logo" 
+            width={220}
+            height={56}
+            className="h-12 md:h-14 w-auto shrink-0 mix-blend-multiply" 
+            referrerPolicy="no-referrer"
+          />
         </div>
 
         {/* Links Navigation (Desktop) */}

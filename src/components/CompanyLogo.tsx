@@ -32,15 +32,12 @@ export default function CompanyLogo({
 
   if (variant === 'full') {
     return (
-      <picture className="contents">
-        <source srcSet="/logo-full.webp" type="image/webp" />
-        <img 
-          src="/logo-full.png" 
-          alt="OmniRange Logo with Tagline" 
-          className={`${className} ${blendClass}`}
-          referrerPolicy="no-referrer"
-        />
-      </picture>
+      <img 
+        src="/logo-full.webp" 
+        alt="OmniRange Logo with Tagline" 
+        className={`${className} ${blendClass}`}
+        referrerPolicy="no-referrer"
+      />
     );
   }
 
