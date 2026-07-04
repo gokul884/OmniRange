@@ -12,11 +12,12 @@ export default function CompanyLogo({
   theme = 'light'
 }: CompanyLogoProps) {
   
-  // Choose the appropriate blend mode to make solid black or white backgrounds transparent
-  // We use high contrast and saturation filters for dark theme to prevent the logo from looking washed out or "too light" when inverted over the dark blue footer background.
-  const blendClass = theme === 'dark' 
-    ? 'mix-blend-screen invert contrast-[1.85] brightness-[1.15] saturate-[1.5]' 
-    : 'mix-blend-multiply';
+  // Choose the appropriate CSS filter based on the theme
+  // For light theme, we render the transparent PNG exactly as-is (no filters needed).
+  // For dark theme, we convert the logo to a clean, highly visible monochrome white using brightness(0) invert(1).
+  const filterStyle = theme === 'dark' 
+    ? { filter: 'brightness(0) invert(1)' } 
+    : { filter: 'none' };
   
   // Render the exact uploaded PNG files using standard img tags with referrerPolicy="no-referrer"
   if (variant === 'symbol') {
@@ -24,7 +25,8 @@ export default function CompanyLogo({
       <img 
         src="/logo-symbol.png" 
         alt="OmniRange Symbol" 
-        className={`${className} ${blendClass}`}
+        className={className}
+        style={filterStyle}
         referrerPolicy="no-referrer"
       />
     );
@@ -35,7 +37,8 @@ export default function CompanyLogo({
       <img 
         src="/logo-full.png" 
         alt="OmniRange Logo with Tagline" 
-        className={`${className} ${blendClass}`}
+        className={className}
+        style={filterStyle}
         referrerPolicy="no-referrer"
       />
     );
@@ -46,7 +49,8 @@ export default function CompanyLogo({
       <img 
         src="/logo-text.png" 
         alt="OmniRange Text" 
-        className={`${className} ${blendClass}`}
+        className={className}
+        style={filterStyle}
         referrerPolicy="no-referrer"
       />
     );
