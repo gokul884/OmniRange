@@ -5,7 +5,6 @@
 
 import React, { useState, useEffect } from 'react';
 import { Eye, ShieldCheck, Mail, Menu, X } from 'lucide-react';
-import CompanyLogo from './CompanyLogo';
 
 interface NavbarProps {
   onContactClick: () => void;
@@ -102,7 +101,12 @@ export default function Navbar({ onContactClick, onAdminToggle, isAdminOpen, lea
           }}
           className="flex items-center cursor-pointer hover:opacity-90 transition-opacity"
         >
-          <CompanyLogo variant="full" theme="light" className="h-12 md:h-14 w-auto shrink-0" />
+          <img 
+            src="/logo-full-1.png" 
+            alt="OmniRange Logo" 
+            className="h-12 md:h-14 w-auto shrink-0 mix-blend-multiply" 
+            referrerPolicy="no-referrer"
+          />
         </div>
 
         {/* Links Navigation (Desktop) */}

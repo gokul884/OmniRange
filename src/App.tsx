@@ -507,7 +507,7 @@ export default function App() {
                 <CompanyLogo variant="full" theme="dark" className="h-12 md:h-14 w-auto shrink-0" />
               </div>
               <p className="text-xs text-secondary-fixed opacity-70 leading-relaxed max-w-sm">
-                Engineering high-performance organic SEO rankings, attribution mapping, and enterprise-grade conversion architectures for forward-thinking brands. Explore our official resources at <a href="https://omniorange.vercel.app/" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline font-bold">OmniRange Web Portal</a>.
+                Engineering high-performance organic SEO rankings, attribution mapping, and enterprise-grade conversion architectures for forward-thinking brands.
               </p>
               
               {/* Social Media Share / Follow Icons */}
@@ -651,7 +651,7 @@ export default function App() {
               &copy; {new Date().getFullYear()} <a href="https://omniorange.vercel.app/" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors font-bold">OmniRange</a>, All Rights Reserved
             </p>
             <p className="flex items-center gap-1">
-              Crafted for Growth with <Heart className="w-3 h-3 text-red-500 fill-red-500" /> by <a href="https://omniorange.vercel.app/" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors font-semibold underline decoration-dotted">OmniRange Performance Agency</a>
+              Crafted for your digital growth with <Heart className="w-3 h-3 text-red-500 fill-red-500" />
             </p>
           </div>
 

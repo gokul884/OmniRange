@@ -27,6 +27,23 @@ import {
   Printer
 } from 'lucide-react';
 import { BLOGS_DATA, BlogPost } from '../types';
+import ReactMarkdown from 'react-markdown';
+
+
+const parseInlineMarkdown = (text: string) => {
+  if (!text) return '';
+  const parts = text.split('**');
+  return parts.map((part, index) => {
+    if (index % 2 === 1) {
+      return (
+        <strong key={index} className="font-semibold text-on-surface">
+          {part}
+        </strong>
+      );
+    }
+    return part;
+  });
+};
 
 interface BlogsProps {
   readingArticle: BlogPost | null;
@@ -47,6 +64,74 @@ export default function Blogs({ readingArticle, onSelectArticle }: BlogsProps) {
     }, 800);
     return () => clearTimeout(timer);
   }, [selectedCategory, searchQuery, readingArticle === null]);
+
+  // Dynamically inject BlogPosting JSON-LD for individual articles
+  useEffect(() => {
+    // Clean up any existing BlogPosting JSON-LD script first
+    const existingScript = document.getElementById('blogposting-jsonld');
+    if (existingScript) {
+      existingScript.remove();
+    }
+
+    if (readingArticle) {
+      const formatSchemaDate = (dateStr: string): string => {
+        try {
+          const d = new Date(dateStr);
+          if (!isNaN(d.getTime())) {
+            return d.toISOString().split('T')[0];
+          }
+        } catch (e) {
+          // ignore
+        }
+        return '2026-06-28';
+      };
+
+      const formattedDate = formatSchemaDate(readingArticle.date);
+
+      const jsonLD = {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "@id": `${window.location.origin}/#blogs?id=${readingArticle.id}`,
+        "headline": readingArticle.title,
+        "description": readingArticle.description,
+        "image": readingArticle.image,
+        "datePublished": formattedDate,
+        "dateModified": formattedDate,
+        "author": {
+          "@type": "Person",
+          "name": readingArticle.author,
+          "jobTitle": readingArticle.authorRole,
+          "image": readingArticle.authorAvatar
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "OmniRange",
+          "logo": {
+            "@type": "ImageObject",
+            "url": `${window.location.origin}/logo-fav.svg`
+          }
+        },
+        "mainEntityOfPage": {
+          "@type": "WebPage",
+          "@id": `${window.location.origin}/#blogs`
+        },
+        "keywords": readingArticle.metaKeywords || ""
+      };
+
+      const script = document.createElement('script');
+      script.id = 'blogposting-jsonld';
+      script.type = 'application/ld+json';
+      script.innerHTML = JSON.stringify(jsonLD, null, 2);
+      document.head.appendChild(script);
+    }
+
+    return () => {
+      const existingScriptCleanup = document.getElementById('blogposting-jsonld');
+      if (existingScriptCleanup) {
+        existingScriptCleanup.remove();
+      }
+    };
+  }, [readingArticle]);
 
   // Comments state mapped by blog post id with extended reaction attributes
   const [commentsMap, setCommentsMap] = useState<Record<string, Array<{
@@ -387,7 +472,7 @@ export default function Blogs({ readingArticle, onSelectArticle }: BlogsProps) {
           <div className="space-y-8 animate-fadeIn">
             
             {/* Back & Share Top Header Navigation Bar */}
-            <div className="flex items-center justify-between bg-white px-4 py-3 sm:px-6 sm:py-4 rounded-2xl border border-surface-variant/60 shadow-sm">
+            <div className="sticky top-[80px] z-30 flex items-center justify-between bg-white/95 backdrop-blur-md px-4 py-3 sm:px-6 sm:py-4 rounded-2xl border border-surface-variant/60 shadow-sm">
               <button 
                 onClick={() => onSelectArticle(null)}
                 className="flex items-center gap-2 text-xs font-bold text-on-surface-variant hover:text-primary transition-colors group"
@@ -447,13 +532,13 @@ export default function Blogs({ readingArticle, onSelectArticle }: BlogsProps) {
             </div>
 
             {/* Dual Column Layout */}
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start max-w-full overflow-hidden">
               
               {/* LEFT COLUMN: Full Blog Content & Interactive Comments (lg:col-span-8) */}
-              <div className="lg:col-span-8 space-y-8">
+              <div className="lg:col-span-8 space-y-8 max-w-full overflow-hidden">
                 
                 {/* Main Article Container with print-friendly layout trigger */}
-                <div className="bg-white p-4 sm:p-6 md:p-10 rounded-3xl border border-surface-variant shadow-soft space-y-8 printable-article">
+                <div className="bg-white px-5 py-4 sm:p-6 md:p-10 rounded-3xl border border-surface-variant shadow-soft space-y-8 printable-article break-words overflow-hidden max-w-full">
                   
                   {/* Title & Metadata */}
                   <div className="space-y-4">
@@ -510,37 +595,26 @@ export default function Blogs({ readingArticle, onSelectArticle }: BlogsProps) {
                   </div>
  
                   {/* Formatted Reading Content */}
-                  <div className="prose prose-sm max-w-none text-xs md:text-sm text-on-surface leading-relaxed space-y-6 border-b border-surface-variant/30 pb-8">
-                    {readingArticle.content.split('\n\n').map((para, i) => {
-                      if (para.trim().startsWith('### ')) {
-                        return (
-                          <h2 key={i} className="font-headline font-extrabold text-lg md:text-xl text-on-surface pt-4">
-                            {para.replace('### ', '')}
-                          </h2>
-                        );
-                      }
-                      if (para.trim().startsWith('#### ')) {
-                        return (
-                          <h3 key={i} className="font-headline font-bold text-xs sm:text-sm md:text-base text-on-surface pt-2 uppercase tracking-wide">
-                            {para.replace('#### ', '')}
-                          </h3>
-                        );
-                      }
-                      if (para.trim().startsWith('- ')) {
-                        return (
-                          <ul key={i} className="list-disc pl-5 space-y-2 text-on-surface-variant font-sans">
-                            {para.split('\n').map((li, idx) => (
-                              <li key={idx} className="pl-1">{li.replace('- ', '')}</li>
-                            ))}
-                          </ul>
-                        );
-                      }
-                      return (
-                        <p key={i} className="font-sans leading-relaxed text-on-surface-variant">
-                          {para.trim()}
-                        </p>
-                      );
-                    })}
+                  <div className="max-w-[70ch] mx-auto w-full break-words text-[16px] md:text-[18px] lg:text-[19px] text-on-surface-variant leading-[1.8] font-normal font-sans border-b border-surface-variant/30 pb-12">
+                    <ReactMarkdown
+                      components={{
+                        h1: ({node, ...props}) => <h1 className="font-headline font-bold text-3xl md:text-4xl text-on-surface pt-8 pb-3 tracking-tight leading-tight" {...props} />,
+                        h2: ({node, ...props}) => <h2 className="font-headline font-bold text-2.5xl md:text-3.5xl text-on-surface pt-8 pb-3 tracking-tight leading-snug" {...props} />,
+                        h3: ({node, ...props}) => <h3 className="font-headline font-semibold text-xl md:text-2xl text-on-surface pt-6 pb-2 tracking-tight leading-snug" {...props} />,
+                        h4: ({node, ...props}) => <h4 className="font-headline font-semibold text-lg md:text-xl text-on-surface pt-4 pb-2 tracking-tight leading-snug" {...props} />,
+                        p: ({node, ...props}) => <p className="text-on-surface-variant font-normal leading-[1.8] mb-6" {...props} />,
+                        ul: ({node, ...props}) => <ul className="list-disc pl-6 space-y-3 my-4 text-on-surface-variant" {...props} />,
+                        ol: ({node, ...props}) => <ol className="list-decimal pl-6 space-y-3 my-4 text-on-surface-variant" {...props} />,
+                        li: ({node, ...props}) => <li className="pl-1 leading-[1.8]" {...props} />,
+                        strong: ({node, ...props}) => <strong className="font-semibold text-on-surface" {...props} />,
+                        em: ({node, ...props}) => <em className="italic" {...props} />,
+                        code: ({node, ...props}) => <code className="bg-surface-variant/30 px-1.5 py-0.5 rounded font-mono text-sm text-primary" {...props} />,
+                        pre: ({node, ...props}) => <pre className="bg-surface-variant/20 p-4 rounded-xl font-mono text-sm overflow-x-auto my-6 border border-surface-variant/40" {...props} />,
+                        blockquote: ({node, ...props}) => <blockquote className="border-l-4 border-primary pl-4 italic my-6 text-on-surface-variant/90" {...props} />
+                      }}
+                    >
+                      {readingArticle.content}
+                    </ReactMarkdown>
                   </div>
 
                   {/* Related Posts Section based on matching tags / categories */}
