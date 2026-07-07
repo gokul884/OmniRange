@@ -285,4 +285,50 @@ html {
   }
 }
 
+/* Custom styles for raw HTML parsed from Blogger */
+.prose-html img {
+  max-width: 100% !important;
+  height: auto !important;
+  border-radius: 0px !important;
+  margin-top: 1.5rem !important;
+  margin-bottom: 1.5rem !important;
+  display: block !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
+.prose-html a {
+  color: var(--color-primary);
+  text-decoration: underline;
+  font-weight: 500;
+}
+
+.prose-html a:hover {
+  opacity: 0.9;
+}
+
+.prose-html p {
+  margin-bottom: 1.5rem;
+  line-height: 1.8;
+}
+
+.prose-html h1, 
+.prose-html h2, 
+.prose-html h3, 
+.prose-html h4 {
+  font-family: var(--font-headline);
+  font-weight: 700;
+  color: var(--color-on-surface);
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+.prose-html h1 { font-size: 1.875rem; line-height: 2.25rem; }
+.prose-html h2 { font-size: 1.5rem; line-height: 2rem; }
+.prose-html h3 { font-size: 1.25rem; line-height: 1.75rem; }
+.prose-html h4 { font-size: 1.125rem; line-height: 1.5rem; }
+
+
 

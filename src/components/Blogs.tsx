@@ -365,19 +365,75 @@ export default function Blogs({
   const hasFeaturedImageInContent = useMemo(() => {
     if (!readingArticle || !readingArticle.image || !readingArticle.content) return false;
     
-    const cleanUrl = (url: string) => {
+    // Normalize any Google Photos / Blogger image URL to its unique base identifier
+    const normalizeImgUrl = (url: string) => {
+      if (!url) return '';
       try {
-        const u = new URL(url);
-        return u.pathname + u.search;
+        // Remove protocol and query parameters
+        let clean = url.replace(/^(https?:)?\/\//i, '').split('?')[0];
+        
+        // Remove common resolution modifiers like /s1600/, /s640/, /s320/, /s72-c/, /w640-h480/, /s1600-h/
+        clean = clean
+          .replace(/\/s\d+(-[a-z0-9-]+)?\//gi, '/')
+          .replace(/\/w\d+(-[a-z0-9-]+)?\//gi, '/')
+          .replace(/\/s\d+(-[a-z0-9-]+)?$/gi, '')
+          .replace(/\/w\d+(-[a-z0-9-]+)?$/gi, '')
+          .replace(/[\/=](s\d+|w\d+|h\d+)(-[c-k-no]+)?\b/gi, '');
+          
+        return clean.toLowerCase().trim();
       } catch {
-        return url;
+        return url.toLowerCase().trim();
       }
     };
-    
-    const targetClean = cleanUrl(readingArticle.image).toLowerCase();
+
+    // Extract a unique long alphanumeric identifier token typical of Google/Blogger/Unsplash URLs
+    const extractUniqueToken = (url: string): string => {
+      if (!url) return '';
+      const parts = url.split(/[\/\?&=_.-]/);
+      for (const part of parts) {
+        if (part.length > 20 && /^[a-z0-9-_]+$/i.test(part)) {
+          return part.toLowerCase();
+        }
+      }
+      return '';
+    };
+
+    // 1. Fast unique token containment check
+    const featuredToken = extractUniqueToken(readingArticle.image);
     const contentLower = readingArticle.content.toLowerCase();
+    if (featuredToken && contentLower.includes(featuredToken)) {
+      return true;
+    }
     
-    return contentLower.includes(targetClean) || contentLower.includes(readingArticle.image.toLowerCase());
+    const targetClean = normalizeImgUrl(readingArticle.image);
+    if (!targetClean) return false;
+
+    // 2. Check if any image inside the content HTML matches this normalized URL or token
+    try {
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(readingArticle.content, 'text/html');
+      const imgs = doc.querySelectorAll('img');
+      
+      for (const img of Array.from(imgs)) {
+        const src = img.getAttribute('src') || '';
+        const cleanSrc = normalizeImgUrl(src);
+        
+        if (cleanSrc && (cleanSrc === targetClean || cleanSrc.includes(targetClean) || targetClean.includes(cleanSrc))) {
+          return true;
+        }
+
+        const srcToken = extractUniqueToken(src);
+        if (srcToken && featuredToken && srcToken === featuredToken) {
+          return true;
+        }
+      }
+    } catch (e) {
+      console.error('Error parsing DOM for featured image detection:', e);
+    }
+    
+    // 3. Fallback: simple substring checks on normalized strings
+    const targetUrlLower = readingArticle.image.toLowerCase();
+    return contentLower.includes(targetClean) || contentLower.includes(targetUrlLower);
   }, [readingArticle]);
 
   // Clean the main blog body to avoid duplicate thumbnail image rendering
@@ -529,7 +585,7 @@ export default function Blogs({
                   >
                     <div>
                       {/* Card Image banner */}
-                      <div className="rounded-2xl overflow-hidden aspect-[16/10] border border-surface-variant/40 shadow-sm relative">
+                      <div className="overflow-hidden aspect-[16/10] border border-surface-variant/40 shadow-sm relative">
                         <OptimizedImage 
                           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" 
                           alt={post.title}
@@ -706,9 +762,9 @@ export default function Blogs({
  
                   {/* Featured Hero Banner */}
                   {!hasFeaturedImageInContent && (
-                    <div className="rounded-2xl overflow-hidden aspect-[16/9] border border-surface-variant/50 shadow-soft">
+                    <div className="w-full overflow-hidden flex justify-center">
                       <img 
-                        className="w-full h-full object-cover" 
+                        className="w-full h-auto max-h-[550px] object-contain" 
                         alt={readingArticle.title} 
                         src={readingArticle.image} 
                         decoding="async"
@@ -774,7 +830,7 @@ export default function Blogs({
                             className="group cursor-pointer bg-surface-container/30 hover:bg-surface-container/60 p-4 rounded-2xl border border-surface-variant/30 hover:border-surface-variant/60 transition-all duration-300 flex flex-col justify-between space-y-4"
                           >
                             <div className="space-y-3">
-                              <div className="rounded-xl overflow-hidden aspect-[16/10] border border-surface-variant/40 shadow-sm relative">
+                              <div className="overflow-hidden aspect-[16/10] border border-surface-variant/40 shadow-sm relative">
                                 <img 
                                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" 
                                   alt={post.title}
@@ -972,7 +1028,7 @@ export default function Blogs({
                         className="group cursor-pointer flex gap-3 p-2 rounded-2xl hover:bg-surface-container transition-all"
                       >
                         {/* Sidebar Thumbnail */}
-                        <div className="w-20 h-20 rounded-xl overflow-hidden shrink-0 border border-surface-variant/30 shadow-inner">
+                        <div className="w-20 h-20 overflow-hidden shrink-0 border border-surface-variant/30 shadow-inner">
                           <img 
                             className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" 
                             src={post.image} 
