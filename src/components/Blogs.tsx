@@ -65,6 +65,34 @@ const cleanBlogPostContent = (contentHtml: string): string => {
         img.setAttribute('alt', '');
         img.removeAttribute('title');
       }
+
+      // Automatically compress and optimize inline Blogger and Unsplash images
+      const src = img.getAttribute('src') || '';
+      if (src) {
+        if (src.includes('googleusercontent.com') || src.includes('blogspot.com') || src.includes('bp.blogspot.com')) {
+          const pathModifierRegex = /\/([sw]\d+[-a-zA-Z0-9]*)\//;
+          let optimizedSrc = src;
+          if (pathModifierRegex.test(optimizedSrc)) {
+            optimizedSrc = optimizedSrc.replace(pathModifierRegex, '/s1200-rw/');
+          } else {
+            const queryModifierRegex = /([=sS])\d+([-a-zA-Z0-9]*)$/;
+            if (queryModifierRegex.test(optimizedSrc)) {
+              optimizedSrc = optimizedSrc.replace(queryModifierRegex, '=s1200-rw');
+            }
+          }
+          img.setAttribute('src', optimizedSrc);
+        } else if (src.includes('unsplash.com')) {
+          try {
+            const u = new URL(src);
+            u.searchParams.set('auto', 'format');
+            u.searchParams.set('q', '80');
+            u.searchParams.set('w', '1200');
+            img.setAttribute('src', u.toString());
+          } catch (e) {
+            // ignore malformed URLs
+          }
+        }
+      }
     }
     
     return doc.body.innerHTML;

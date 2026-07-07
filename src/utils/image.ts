@@ -13,22 +13,41 @@
 export function getOptimizedImage(url: string, defaultWidth: number = 600): { src: string; srcSet?: string } {
   if (!url) return { src: '' };
 
-  // Handle Google User Content URLs (lh3.googleusercontent.com)
-  if (url.includes('googleusercontent.com')) {
-    // Strip any existing width/formatting parameters
-    const cleanUrl = url.split('=')[0];
-    
-    // Choose appropriate responsive widths
-    const widths = defaultWidth <= 200 
-      ? [48, 96, 144, 192, 256] 
-      : [320, 480, 640, 800, 1024, 1200];
-    
-    const src = `${cleanUrl}=w${defaultWidth}-rw`;
-    const srcSet = widths
-      .map(w => `${cleanUrl}=w${w}-rw ${w}w`)
-      .join(', ');
+  // Handle Google/Blogger/Blogspot hosted images
+  if (
+    url.includes('googleusercontent.com') ||
+    url.includes('blogspot.com') ||
+    url.includes('bp.blogspot.com')
+  ) {
+    // 1. If it uses query-based parameters (e.g., ends in =s1600 or has =w320)
+    if (url.includes('=')) {
+      const cleanUrl = url.split('=')[0];
+      const widths = defaultWidth <= 200 
+        ? [48, 96, 144, 192, 256] 
+        : [320, 480, 640, 800, 1024, 1200];
       
-    return { src, srcSet };
+      const src = `${cleanUrl}=w${defaultWidth}-rw`;
+      const srcSet = widths
+        .map(w => `${cleanUrl}=w${w}-rw ${w}w`)
+        .join(', ');
+        
+      return { src, srcSet };
+    }
+
+    // 2. If it uses path-based size modifiers like /s1600/ or /s72-c/ or /w640-h480/
+    const pathModifierRegex = /\/([sw]\d+[-a-zA-Z0-9]*)\//;
+    if (pathModifierRegex.test(url)) {
+      const widths = defaultWidth <= 200 
+        ? [48, 96, 144, 192, 256] 
+        : [320, 480, 640, 800, 1024, 1200];
+
+      const src = url.replace(pathModifierRegex, `/s${defaultWidth}-rw/`);
+      const srcSet = widths
+        .map(w => `${url.replace(pathModifierRegex, `/s${w}-rw/`)} ${w}w`)
+        .join(', ');
+
+      return { src, srcSet };
+    }
   }
 
   // Handle Unsplash image URLs

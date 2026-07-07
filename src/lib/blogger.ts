@@ -59,11 +59,10 @@ export const extractImage = (entry: any): string => {
   // 1. Try media$thumbnail first
   if (entry.media$thumbnail && entry.media$thumbnail.url) {
     let url = entry.media$thumbnail.url;
-    // Replace lower resolution suffixes with high-resolution /s1600/ modifier
+    // Replace lower resolution suffixes with compressed, high-quality s1200-rw (WebP format) modifier
     return url
-      .replace(/\/s72-c-k-no\//, '/s1600/')
-      .replace(/\/s72-c\//, '/s1600/')
-      .replace(/\/s1600-h\//, '/s1600/');
+      .replace(/\/s\d+(-[a-zA-Z0-9-]+)?\//, '/s1200-rw/')
+      .replace(/\/w\d+(-[a-zA-Z0-9-]+)?\//, '/s1200-rw/');
   }
 
   // 2. Fallback to first img element inside content
@@ -71,7 +70,15 @@ export const extractImage = (entry: any): string => {
   const imgRegex = /<img[^>]+src=["']([^"']+)["']/i;
   const match = content.match(imgRegex);
   if (match && match[1]) {
-    return match[1];
+    let url = match[1];
+    // Optimize the fallback content image url
+    if (url.includes('googleusercontent.com') || url.includes('blogspot.com') || url.includes('bp.blogspot.com')) {
+      return url
+        .replace(/\/s\d+(-[a-zA-Z0-9-]+)?\//, '/s1200-rw/')
+        .replace(/\/w\d+(-[a-zA-Z0-9-]+)?\//, '/s1200-rw/')
+        .replace(/[=sS]\d+([-a-zA-Z0-9]+)?$/, '=s1200-rw');
+    }
+    return url;
   }
 
   // 3. Fallback to dynamic placeholder

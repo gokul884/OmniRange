@@ -36,22 +36,49 @@ const stripHtml = (html) => {
     .trim();
 };
 
+// Helper to optimize image URLs for compression and quality
+const optimizeImageUrl = (src) => {
+  if (!src) return src;
+  if (src.includes('googleusercontent.com') || src.includes('blogspot.com') || src.includes('bp.blogspot.com')) {
+    return src
+      .replace(/\/s\d+(-[a-zA-Z0-9-]+)?\//, '/s1200-rw/')
+      .replace(/\/w\d+(-[a-zA-Z0-9-]+)?\//, '/s1200-rw/')
+      .replace(/[=sS]\d+([-a-zA-Z0-9]+)?$/, '=s1200-rw');
+  } else if (src.includes('unsplash.com')) {
+    try {
+      const u = new URL(src);
+      u.searchParams.set('auto', 'format');
+      u.searchParams.set('q', '80');
+      u.searchParams.set('w', '1200');
+      return u.toString();
+    } catch (e) {
+      // ignore
+    }
+  }
+  return src;
+};
+
+// Helper to optimize image URLs inside HTML content
+const optimizeHtmlImages = (html) => {
+  if (!html) return '';
+  return html.replace(/<img[^>]+src=["']([^"']+)["']/gi, (match, src) => {
+    const optimizedSrc = optimizeImageUrl(src);
+    return match.replace(src, optimizedSrc);
+  });
+};
+
 // Helper to extract first image in content or fall back to Blogger thumbnail
 const extractThumbnail = (contentHtml, entry) => {
   // 1. Search for the first image tag src in the content
   const imgRegex = /<img[^>]+src=["']([^"']+)["']/i;
   const match = contentHtml.match(imgRegex);
   if (match && match[1]) {
-    return match[1];
+    return optimizeImageUrl(match[1]);
   }
 
   // 2. Try media$thumbnail as fallback
   if (entry.media$thumbnail && entry.media$thumbnail.url) {
-    const url = entry.media$thumbnail.url;
-    return url
-      .replace(/\/s72-c-k-no\//, '/s1600/')
-      .replace(/\/s72-c\//, '/s1600/')
-      .replace(/\/s1600-h\//, '/s1600/');
+    return optimizeImageUrl(entry.media$thumbnail.url);
   }
 
   // 3. High quality design illustration fallback
@@ -121,7 +148,8 @@ export default async function handler(req, res) {
     // 3. Process and upsert each entry
     for (const entry of entries) {
       const title = entry.title?.$t || entry.title?.text || '';
-      const contentHtml = entry.content?.$t || entry.summary?.$t || '';
+      const rawContentHtml = entry.content?.$t || entry.summary?.$t || '';
+      const contentHtml = optimizeHtmlImages(rawContentHtml);
       
       // Alternate URL to derive the slug
       const alternateLink = entry.link?.find((l) => l.rel === 'alternate')?.href || '';
